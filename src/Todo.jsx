@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import TodoShape from './todo-shape';
 import TodoForm from './TodoForm';
 
+import './Todo.css';
+
 export default function Todo(props) {
     let {
         description,
@@ -25,6 +27,7 @@ export default function Todo(props) {
 
     return (
         <li className={className}>
+            <input type="checkbox" checked={done} disabled={isEditing} onChange={onDoneClick} />
             {isEditing ?
                 <TodoForm
                     onSubmit={updateDescription}
@@ -32,10 +35,7 @@ export default function Todo(props) {
                     submitLabel="Update"
                     initialDescription={description}
                 /> :
-                <>
-                    <p onClick={() => setIsEditing(true)}>{description}</p>
-                    <input type="checkbox" checked={done} onChange={onDoneClick} />
-                </>
+                <p onClick={() => setIsEditing(true)}>{description}</p>
             }
         </li>
     );

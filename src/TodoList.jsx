@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Todo from './Todo';
 import TodoShape from './todo-shape';
 
+import './TodoList.css';
+
 export default function TodoList({ todos, onUpdateTodo }) {
     return (
         <ul className="todo-list">
