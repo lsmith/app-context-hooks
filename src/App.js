@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useReducer } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import TodoForm from './TodoForm';
+import TodoList from './TodoList';
+import todoReducer from './app-reducer';
+// import { useAppContext } from './AppContext';
 
-export default App;
+const addTodo = (id, description) => ({
+    type: 'add',
+    todo: {
+        id,
+        description,
+        done: false,
+    },
+});
+
+const updateTodo = (updates) => ({ type: 'update', ...updates });
+
+export default function App() {
+    let [todos, dispatch] = useReducer(todoReducer, []);
+    // let {
+    //     requestAPI,
+    //     beaconAPI,
+    // } = useAppContext();
+
+    // TODO: I'm here. Continue dev until there's a local Todo app
+    // that works from local state stored in App. Then useContext(AppContext)
+    // to get the APIs and try storing to localStorage and posting to a fake
+    // serviceAPI.
+    return (
+        <>
+            <header className="app-header">
+                <h1>This is a Todo app!</h1>
+            </header>
+            <main className="app-content">
+                {/* {!!onNewTodoSubmit && <TodoForm onSubmit={onNewTodoSubmit} />} */}
+                <TodoForm onSubmit={(description) => dispatch(addTodo(todos.length, description))} />
+                <TodoList
+                    todos={todos}
+                    // onUpdateTodo={onUpdateTodo}
+                    onUpdateTodo={(...payload) => dispatch(updateTodo(...payload))}
+                />
+            </main>
+        </>
+    );
+};
