@@ -44,9 +44,7 @@ let request = (request) => {
     });
 };
 
-const beacon = (url, data) => {
-    navigator.sendBeacon(url, data);
-};
+const beacon = (url, data) => navigator.sendBeacon(url, data);
 
 export default {
     global: window,

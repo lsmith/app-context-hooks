@@ -18,8 +18,8 @@ export default function Todo(props) {
         className += ' done';
     }
 
-    let updateDescription = () => {
-        onUpdate(description);
+    let updateDescription = (newDescription) => {
+        onUpdate(newDescription);
         setIsEditing(false);
     };
 

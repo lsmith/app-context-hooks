@@ -1,28 +1,42 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import './App.css';
 
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import todoReducer from './app-reducer';
-// import { useAppContext } from './AppContext';
+import { useAppContext } from './AppContext';
 
-const addTodo = (id, description) => ({
+const addTodo = (description) => ({
     type: 'add',
     todo: {
-        id,
         description,
-        done: false,
     },
 });
 
-const updateTodo = (updates) => ({ type: 'update', ...updates });
+const updateTodo = (id, updates) => ({
+    type: 'update',
+    id,
+    todo: { ...updates },
+});
+
+const initTodos = (todos) => ({
+    type: 'init',
+    todos,
+});
 
 export default function App() {
+    let { localStorage } = useAppContext();
     let [todos, dispatch] = useReducer(todoReducer, []);
-    // let {
-    //     requestAPI,
-    //     beaconAPI,
-    // } = useAppContext();
+    
+    useEffect(() => {
+        localStorage.getItem('todos').then((todosFromStorage) => {
+            dispatch(initTodos(todosFromStorage));
+        });
+    }, [localStorage]);
+
+    useEffect(() => {
+        localStorage.setItem('todos', todos);
+    }, [todos, localStorage]);
 
     // TODO: I'm here. Continue dev until there's a local Todo app
     // that works from local state stored in App. Then useContext(AppContext)
@@ -31,15 +45,15 @@ export default function App() {
     return (
         <>
             <header className="app-header">
-                <h1>This is a Todo app!</h1>
+                <h1>Another Todo app </h1>
             </header>
             <main className="app-content">
                 {/* {!!onNewTodoSubmit && <TodoForm onSubmit={onNewTodoSubmit} />} */}
-                <TodoForm onSubmit={(description) => dispatch(addTodo(todos.length, description))} />
+                <TodoForm onSubmit={(description) => dispatch(addTodo(description))} />
                 <TodoList
                     todos={todos}
                     // onUpdateTodo={onUpdateTodo}
-                    onUpdateTodo={(...payload) => dispatch(updateTodo(...payload))}
+                    onUpdateTodo={(id, newTodoData) => dispatch(updateTodo(id, newTodoData))}
                 />
             </main>
         </>

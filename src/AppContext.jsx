@@ -17,14 +17,17 @@ export const createServiceAPI = (requestAPI) => ({
     deleteFromAPI: (url) => requestAPI(url, { method: 'DELETE' }),
 });
 
-export const createAnalyticsAPI = (beaconAPI, toFormData) => (category, type, data) =>
+// The inserted => () => is because useState(fn) gets the initial value by
+// calling fn(), but we want to store the function in state, so return function
+// that returns the function
+export const createAnalyticsAPI = (beaconAPI, toFormData) => () => (category, type, data) =>
     beaconAPI('/track', toFormData({
         category,
         type,
         ...data,
     }));
 
-export const createLogger = (beaconAPI, toFormData) => (category, message, level = 'INFO') =>
+export const createLogger = (beaconAPI, toFormData) => () => (category, message, level = 'INFO') =>
     beaconAPI('/log', toFormData({ category, message, level }));
 
 export const createLocalStorage = (storageAPI) => storageAPI;

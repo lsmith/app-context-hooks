@@ -1,14 +1,16 @@
-export default (todos, { type, id, ...payload }) => {
-    switch (type) {
-        case 'add':
+export default (todos, action) => {
+
+    switch (action.type) {
+        case 'add': {
             return [...todos, {
+                ...action.todo,
                 id: todos.length,
-                ...payload,
                 done: false,
             }];
+        }
 
         case 'update': {
-            let index = todos.indexOf(id);
+            let index = todos.findIndex((todoItem) => action.id === todoItem.id);
 
             if (index === -1) {
                 return todos;
@@ -17,11 +19,15 @@ export default (todos, { type, id, ...payload }) => {
             let newTodos = todos.slice();
             newTodos[index] = {
                 ...todos[index],
-                ...payload,
-                id,
+                ...action.todo,
+                id: action.id,
             };
 
             return newTodos;
+        }
+
+        case 'init': {
+            return action.todos || [];
         }
 
         default: return todos;

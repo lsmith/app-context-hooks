@@ -14,21 +14,29 @@ export default function TodoForm(props) {
     let submitAndClear = (e) => {
         e.preventDefault();
 
-        onSubmit(description);
+        if (description) {
+            onSubmit(description);
 
-        setDescription('');
+            setDescription('');
+        }
+    };
+
+    let cancel = (e) => {
+        e.preventDefault();
+
+        onCancel();
     };
 
     return (
         <form onSubmit={submitAndClear} className="todo">
             <input type="text"
                 name="description"
-                value={description}
-                onChange={({ value }) => { setDescription(value) }}
+                value={description || ''}
+                onChange={({ target: { value }}) => { setDescription(value) }}
             />
-            <button onClick={submitAndClear}>{submitLabel}</button>
+            <button type="submit" onClick={submitAndClear}>{submitLabel}</button>
             {onCancel &&
-                <button onClick={onCancel}>Cancel</button>
+                <button onClick={cancel}>Cancel</button>
             }
         </form>
     );
