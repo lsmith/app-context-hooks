@@ -4,16 +4,19 @@ import './App.css';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import todoReducer from './app-reducer';
-import useStorage from './hooks/use-storage';
-import useAnalytics from './hooks/use-analytics';
-import useAPI from './hooks/use-api';
-import useUrls from './hooks/use-urls';
+import {
+    getFromStorage,
+    putInStorage,
+} from './lib/storage';
+import { getUrl } from './lib/urls';
+import { getFromServer } from './lib/io';
+import track from './lib/analytics';
 
 import {
     TODO,
     ACTION_CREATE,
+    URL_TODOS,
 } from './constants';
-import { URL_TODOS } from './url-constants';
 
 const addTodo = (description) => ({
     type: 'add',
@@ -42,11 +45,6 @@ const initTodos = (todos) => ({
 });
 
 export default function App() {
-    let { getFromStorage, putInStorage } = useStorage();
-    let { getUrl } = useUrls();
-    let { getFromServer } = useAPI();
-    let track = useAnalytics(TODO);
-
     let [todos, dispatch] = useReducer(todoReducer, []);
     let [showDone, setShowDone] = useState(false);
     
@@ -64,18 +62,18 @@ export default function App() {
             let todosFromServer = await response.json();
             dispatch(initTodos(todosFromServer));
         }
-    })()}, [getFromStorage, getFromServer, getUrl]);
+    })()}, []);
 
     useEffect(() => {
         putInStorage('todos', todos);
-    }, [todos, putInStorage]);
+    }, [todos]);
 
     let totalTodos = todos.length;
     let unfinishedTodos = todos.filter(({ done }) => !done);
     let finishedCount = totalTodos - unfinishedTodos.length;
 
     let onSubmit = (description) => {
-        track(ACTION_CREATE, { value: description });
+        track(TODO, ACTION_CREATE, { value: description });
 
         dispatch(addTodo(description));
     };

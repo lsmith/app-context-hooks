@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TodoShape from './todo-shape';
 import TodoForm from './TodoForm';
 import IconX from './IconX';
-import useAnalytics from './hooks/use-analytics';
+import track from './lib/analytics';
 
 import './Todo.css';
 
@@ -25,7 +25,6 @@ export default function Todo(props) {
     } = props;
 
     let [isEditing, setIsEditing] = useState(false);
-    let track = useAnalytics(TODO);
 
     let className = 'todo';
 
@@ -34,26 +33,26 @@ export default function Todo(props) {
     }
 
     let onSubmit = (newDescription) => {
-        track(ACTION_SAVE, { todoId: id, value: newDescription });
+        track(TODO, ACTION_SAVE, { todoId: id, value: newDescription });
 
         onUpdate(id, newDescription);
         setIsEditing(false);
     };
 
     let onCancel = () => {
-        track(ACTION_CANCEL, { todoId: id });
+        track(TODO, ACTION_CANCEL, { todoId: id });
 
         setIsEditing(false);
     };
 
     let onDescriptionClick = () => {
-        track(ACTION_EDIT, { todoId: id, value: description });
+        track(TODO, ACTION_EDIT, { todoId: id, value: description });
 
         setIsEditing(true);
     };
 
     let onDeleteClick = () => {
-        track(ACTION_DELETE, { todoId: id });
+        track(TODO, ACTION_DELETE, { todoId: id });
 
         onDelete(id);
     };

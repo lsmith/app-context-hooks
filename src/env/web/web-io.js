@@ -11,7 +11,7 @@ const toFormData = (data) =>
     }, new FormData());
 
 
-const io = async (request) => {
+export const io = async (request) => {
     let {
         url,
         method = 'GET',
@@ -56,7 +56,7 @@ const io = async (request) => {
 };
 
 // const beacon = (url, body) => navigator.sendBeacon(url, toFormData(body));
-const beacon = (url, body) => io({
+export const beacon = (url, body) => io({
     url,
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -66,16 +66,3 @@ const beacon = (url, body) => io({
     keepalive: true,
     body,
 });
-
-export const getFromServer = (url) => io(url);
-
-export const addToServer = (url, body) => io(url, { method: 'POST', body });
-
-export const replaceOnServer = (url, body) => io(url, { method: 'PUT', body });
-
-export const updateOnServer = (url, body) => io(url, { method: 'PATCH', body });
-
-export const deleteFromServer = (url) => io(url, { method: 'DELETE' });
-
-// ignore beacon responses
-export const notifyServer = (url, body) => { beacon(url, body).catch(() => {}); };
