@@ -10,3 +10,12 @@
 .todo form input {
     font-size: 16px;
 }
+.todo p + button {
+    display: none;
+    border: 0 none;
+    margin: 0 0 0 12px;
+    padding: 0;
+}
+.todo:hover p + button {
+    display: initial;
+}

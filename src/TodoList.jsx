@@ -5,7 +5,7 @@ import TodoShape from './todo-shape';
 
 import './TodoList.css';
 
-export default function TodoList({ todos, onUpdateTodo }) {
+export default function TodoList({ todos, onUpdateTodo, onDeleteTodo }) {
     return (
         <ul className="todo-list">
             {todos.map((todo) =>
@@ -13,6 +13,7 @@ export default function TodoList({ todos, onUpdateTodo }) {
                     {...todo}
                     onDoneClick={() => onUpdateTodo(todo.id, { ...todo, done: !todo.done })}
                     onUpdate={(description) => onUpdateTodo(todo.id, { ...todo, description })}
+                    onDelete={(id) => onDeleteTodo(id)}
                 />
             )}
         </ul>

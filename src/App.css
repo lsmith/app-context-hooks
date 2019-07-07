@@ -11,3 +11,12 @@
 .app-content {
     margin: 24px 48px;
 }
+
+.filter-toggle {
+    margin-bottom: 24px;
+    font-size: 13px;
+}
+
+.filter-toggle input[type="checkbox"] {
+    margin-right: 12px;
+}

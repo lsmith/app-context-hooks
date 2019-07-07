@@ -1,10 +1,12 @@
+import uuid from 'uuid/v1';
+
 export default (todos, action) => {
 
     switch (action.type) {
         case 'add': {
             return [...todos, {
                 ...action.todo,
-                id: todos.length,
+                id: uuid(),
                 done: false,
             }];
         }
@@ -22,6 +24,20 @@ export default (todos, action) => {
                 ...action.todo,
                 id: action.id,
             };
+
+            return newTodos;
+        }
+
+        case 'delete': {
+            let index = todos.findIndex((todoItem) => action.id === todoItem.id);
+
+            if (index === -1) {
+                return todos;
+            }
+
+            let newTodos = todos.slice();
+
+            newTodos.splice(index, 1);
 
             return newTodos;
         }
