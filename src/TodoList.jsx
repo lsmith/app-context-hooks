@@ -13,7 +13,7 @@ export default function TodoList({ todos, onUpdateTodo, onDeleteTodo }) {
                     {...todo}
                     onDoneClick={() => onUpdateTodo(todo.id, { ...todo, done: !todo.done })}
                     onUpdate={(description) => onUpdateTodo(todo.id, { ...todo, description })}
-                    onDelete={(id) => onDeleteTodo(id)}
+                    onDelete={() => onDeleteTodo(todo.id)}
                 />
             )}
         </ul>

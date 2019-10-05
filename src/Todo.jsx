@@ -35,7 +35,7 @@ export default function Todo(props) {
     let onSubmit = (newDescription) => {
         track(TODO, ACTION_SAVE, { todoId: id, value: newDescription });
 
-        onUpdate(id, newDescription);
+        onUpdate(newDescription);
         setIsEditing(false);
     };
 
@@ -54,7 +54,7 @@ export default function Todo(props) {
     let onDeleteClick = () => {
         track(TODO, ACTION_DELETE, { todoId: id });
 
-        onDelete(id);
+        onDelete();
     };
 
     return (
