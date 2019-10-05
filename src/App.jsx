@@ -49,19 +49,19 @@ export default function App() {
     let [showDone, setShowDone] = useState(false);
     
     useEffect(() => {(async () => {
-        // Load local/offline first
-        // let todosFromStorage = await getFromStorage('todos');
+        // Load local/offline
+        let todosFromStorage = await getFromStorage('todos');
 
-        // dispatch(initTodos(todosFromStorage));
+        dispatch(initTodos(todosFromStorage));
 
-        // then load from server.
-        // TODO: the load from storage, falling back to the server should be
-        // handled by a service worker
-        let response = await getFromServer({ url: getUrl(URL_TODOS) });
-        if (response) {
-            let todosFromServer = await response.json();
-            dispatch(initTodos(todosFromServer));
-        }
+        // Load from server.
+        // TODO: Load from server in the app, and have a service worker intercept the 
+        // request to load from storage first, then syncing with the server.
+        // let response = await getFromServer({ url: getUrl(URL_TODOS) });
+        // if (response) {
+        //     let todosFromServer = await response.json();
+        //     dispatch(initTodos(todosFromServer));
+        // }
     })()}, []);
 
     useEffect(() => {
